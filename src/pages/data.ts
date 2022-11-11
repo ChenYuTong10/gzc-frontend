@@ -164,7 +164,7 @@ export const SelectOptions: SelectGroup[] = [
                 disabled: false
             },
             {
-                label: "学术论文",
+                label: "论文",
                 value: "R",
                 disabled: false
             }

@@ -11,9 +11,8 @@ module.exports = {
                     lessOptions: {
                         modifyVars: {
                             "@primary-color": "#318640",
-                            "@font-size-base": "16px"
+                            "@font-size-base": "16px",
                             // "@input-height-lg": "56px",
-                            // "@input-padding-horizontal-lg": "24px",
                             // "@select-single-item-height-lg": "48px",
                             // "@select-dropdown-height": "48px",
                             // "@select-dropdown-font-size": "16px"
