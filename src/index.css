@@ -10,12 +10,17 @@
 
 :root
 {
-    --segement-border-color: #ebebeb;
+    --font-size-base: 16px;
+
+    --search-bar-normal-width: 561px;
 
     --block-margin-bottom: 36px;
+    --sub-block-margin-bottom: 24px;
+    --header-block-margin-left: 30px;
 
     --logo-url: url("./images/logo.png");
     --background-image-url: url("./images/background.png");
 
     --primary-color: #318640;
+    --segement-border-color: #ebebeb;
 }
