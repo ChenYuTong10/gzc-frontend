@@ -1,5 +1,7 @@
 const CracoLessPlugin = require('craco-less');
 
+// More details to customize theme seeing https://ant.design/docs/react/customize-theme.
+// More the 'less' variables seeing https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less.
 module.exports = {
     plugins: [
         {
@@ -8,8 +10,12 @@ module.exports = {
                 lessLoaderOptions: {
                     lessOptions: {
                         modifyVars: {
-                            "@primary-color": '#1DA57A',
-                            "@link-color": "#2a6835b3"
+                            "@primary-color": "#318640",
+                            // "@input-height-lg": "56px",
+                            // "@input-padding-horizontal-lg": "24px",
+                            // "@select-single-item-height-lg": "48px",
+                            // "@select-dropdown-height": "48px",
+                            // "@select-dropdown-font-size": "16px"
                         },
                         javascriptEnabled: true,
                     },

@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: '楷体', sans-serif;
+}
+
+:root
+{
+    --segement-border-color: #ebebeb;
+
+    --block-margin-bottom: 36px;
+
+    --logo-url: url("./images/logo.png");
+    --background-image-url: url("./images/background.png");
+
+    --primary-color: #318640;
+}
