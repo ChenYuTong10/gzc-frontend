@@ -2,7 +2,7 @@
 @select-label-size: 1.12em;
 @footer-height: 90px;
 
-.container {
+.home__container {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -14,13 +14,13 @@
     height: calc(100vh - @footer-height);
     padding-top: 56px;
 
-    .left {
+    .home__left {
       display: flex;
       flex-direction: column;
       width: 60%;
       height: 100%;
 
-      .logo {
+      .home__logo {
         width: 350px;
         height: 100px;
         margin: 0 auto var(--block-margin-bottom);
@@ -30,21 +30,21 @@
         background-image: var(--logo-url);
       }
 
-      .search {
+      .home__search {
         width: @search-bar-width;
         margin: 0 auto var(--block-margin-bottom);
       }
 
-      .search input:focus::placeholder {
+      .home__search input:focus::placeholder {
         color: transparent;
       }
 
-      .advance {
+      .home__advance {
         flex: 1;
         width: 70%;
         margin: 0 auto;
 
-        .option {
+        .home__option {
           display: flex;
           justify-content: space-between;
           align-content: center;
@@ -52,7 +52,7 @@
           height: 40px;
           margin-bottom: var(--block-margin-bottom);
 
-          .label {
+          .home__label {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -65,7 +65,7 @@
             background-color: var(--primary-color);
           }
 
-          .select-group {
+          .home__select-group {
             width: 70%;
             height: 100%;
           }
@@ -73,11 +73,11 @@
       }
     }
 
-    .right {
+    .home__right {
       width: 40%;
       height: 100%;
 
-      .background {
+      .home__background {
         position: relative;
         width: 100%;
         height: 100%;
@@ -88,7 +88,7 @@
         background-image: var(--background-image-url);
       }
 
-      .background::after {
+      .home__background::after {
         position: absolute;
         top: 0;
         left: 0;

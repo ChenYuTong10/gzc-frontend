@@ -1,8 +1,16 @@
 import "./Show.less";
 
 function Show() {
+    document.title = "Show - GZC"
     return (
-        <div>Show</div>
+        <div className={"container"}>
+            <header>
+
+            </header>
+            <main>
+
+            </main>
+        </div>
     );
 }
 

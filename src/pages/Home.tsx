@@ -28,11 +28,11 @@ function Home() {
     };
 
     return (
-        <div className={"container"}>
+        <div className={"home__container"}>
             <main>
-                <div className={"left"}>
-                    <div className={"logo"}></div>
-                    <div className={"search"}>
+                <div className={"home__left"}>
+                    <div className={"home__logo"}></div>
+                    <div className={"home__search"}>
                         <Search
                             placeholder="输入关键字..."
                             allowClear
@@ -43,12 +43,12 @@ function Home() {
                             onSearch={onSearch}
                         />
                     </div>
-                    <div className={"advance"}>
+                    <div className={"home__advance"}>
                         {
                             RadioOptions.map((option, index) => (
-                                <div className={"option"} key={index}>
-                                    <div className={"label"}>{option.label}</div>
-                                    <div className={"select-group"}>
+                                <div className={"home__option"} key={index}>
+                                    <div className={"home__label"}>{option.label}</div>
+                                    <div className={"home__select-group"}>
                                         <Select
                                             style={{
                                                 width: "100%"
@@ -64,9 +64,9 @@ function Home() {
                         }
                         {
                             SelectOptions.map((option, index) => (
-                                <div className={"option"} key={index}>
-                                    <div className={"label"}>{option.label}</div>
-                                    <div className={"select-group"}>
+                                <div className={"home__option"} key={index}>
+                                    <div className={"home__label"}>{option.label}</div>
+                                    <div className={"home__select-group"}>
                                         <Select
                                             style={{
                                                 width: "100%"
@@ -85,8 +85,8 @@ function Home() {
                         }
                     </div>
                 </div>
-                <div className={"right"}>
-                    <div className={"background"}></div>
+                <div className={"home__right"}>
+                    <div className={"home__background"}></div>
                 </div>
             </main>
             <footer>
