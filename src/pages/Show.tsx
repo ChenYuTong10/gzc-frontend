@@ -47,10 +47,10 @@ function Show() {
     ];
 
     return (
-        <div className={"container"}>
+        <div className={"show__container"}>
             <header>
-                <div className={"logo"}></div>
-                <div className={"search"}>
+                <div className={"show__logo"}></div>
+                <div className={"show__search"}>
                     <Search
                         placeholder="输入关键字..."
                         allowClear
@@ -60,16 +60,16 @@ function Show() {
                         enterButton="搜索"
                     />
                 </div>
-                <div className={"advance"}>
+                <div className={"show__advance"}>
                     <Button size={"large"} shape={"circle"}><SettingOutlined /></Button>
                 </div>
             </header>
             <main>
-                <div className={"console"}>
-                    <div className={"total"}>
-                        满足条件的文档共有<span className={"num"}>{12304}</span>个
+                <div className={"show__console"}>
+                    <div className={"show__total"}>
+                        满足条件的文档共有<span className={"show__num"}>{12304}</span>个
                     </div>
-                    <div className={"pagination"}>
+                    <div className={"show__pagination"}>
                         <Pagination
                             total={12304}
                             defaultPageSize={20}
@@ -77,11 +77,11 @@ function Show() {
                         />
                     </div>
                 </div>
-                <div className={"result"}>
+                <div className={"show__result"}>
                     {/* The reason why here needs a wrapper is that */}
                     {/* making the all outside element width 100% and */}
                     {/* using justify-content to control the center. */}
-                    <div className={"list"}>
+                    <div className={"show__list"}>
                         <List
                             bordered
                             loading={false}
@@ -97,7 +97,7 @@ function Show() {
                                             <div>{index + 1}</div>
                                         </Col>
                                         <Col flex={"auto"}>
-                                            <div className={"text"}>{datum.text}</div>
+                                            <div className={"show__text"}>{datum.text}</div>
                                         </Col>
                                         <Col flex={"5%"}>
                                             <Button type="link">详情</Button>
