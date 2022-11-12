@@ -37,9 +37,11 @@ function Home() {
                     break;
                 default:
                     // array type
+                    let values: any[] = [];
                     params[key].forEach((value: any)=> {
-                        keyPairs.push(`${key}=${value}`);
+                        values.push(value);
                     });
+                    keyPairs.push(`${key}=${values.join("+")}`);
             }
         });
         return keyPairs.join("&");
