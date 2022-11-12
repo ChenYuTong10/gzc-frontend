@@ -13,6 +13,7 @@ function Home() {
         keyword: "",
         target: RadioOptions.find(o => o.field === "target")?.default,
         limit: RadioOptions.find(o => o.field === "limit")?.default,
+        show: RadioOptions.find(o => o.field === "body")?.default,
         tags: [], grades: [], genres: []
     };
 
