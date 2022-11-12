@@ -35,13 +35,11 @@ function Home() {
     const radioOnChange = (field: string) => {
         return (optionValue: string) => {
             params[field] = optionValue;
-            console.log(params);
         };
     };
     const multipleOnChange = (field: string) => {
         return (optionValue: string) => {
             params[field] = optionValue;
-            console.log(params);
         };
     };
 
