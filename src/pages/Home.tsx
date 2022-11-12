@@ -3,7 +3,7 @@ import {
     RadioOptions,
     SelectOptions
 } from "./data";
-import {createSearchParams, useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Input, Select } from 'antd';
 const { Search } = Input;
 
@@ -11,34 +11,62 @@ function Home() {
     const TargetDefault = RadioOptions.find(o => o.field === "target")?.default;
     const LimitDefault = RadioOptions.find(o => o.field === "limit")?.default;
 
-    const data: {[index: string]: any} = { keyword: "",  target: TargetDefault,  limit: LimitDefault,  tags: [],  grades: [],  genres: [] };
+    const params: {[index: string]: any} = { keyword: "",  target: TargetDefault,  limit: LimitDefault,  tags: [],  grades: [],  genres: [] };
 
     const navigate = useNavigate();
+
+    const stringifyParams = (params: any): string => {
+        if (typeof params !== "object") {
+            throw new Error("params need to be an object");
+        }
+        const keyPairs: string[] = [];
+        Object.keys(params).forEach((key) => {
+            switch (typeof params[key]) {
+                case "bigint":
+                case "string":
+                case "number":
+                case "boolean":
+                    keyPairs.push(`${key}=${params[key]}`);
+                    break;
+                case "undefined":
+                    console.warn(`value is undefined in ${key} field`);
+                    break;
+                case "object":
+                case "function":
+                    console.warn(`object and function is unsupported now`);
+                    break;
+                default:
+                    // array type
+                    params[key].forEach((value: any)=> {
+                        keyPairs.push(`${key}=${value}`);
+                    });
+            }
+        });
+        return keyPairs.join("&");
+    };
 
     // the callback function when the search button is clicked or Enter is tapped.
     const onSearch = (keyword: string) => {
         if (keyword.length === 0) {
             return;
         }
-        data["keyword"] = keyword;
+        params["keyword"] = keyword;
         navigate({
             pathname: "/show",
-            search: createSearchParams({
-                params: JSON.stringify(data)
-            }).toString()
+            search: `?${stringifyParams(params)}`
         });
     };
 
     // the callback function when the select value is change.
     const onChange = (field: string) => {
         return (optionValue: string | string[]) => {
-            if (Array.isArray(data[field])) {
+            if (Array.isArray(params[field])) {
                 // multiple select mode
-                data[field].push(...optionValue as string[]);
+                params[field].push(...optionValue as string[]);
             }
             else {
                 // single select mode
-                data[field] = optionValue as string;
+                params[field] = optionValue as string;
             }
         };
     };
