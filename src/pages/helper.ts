@@ -48,7 +48,7 @@ export const parseSearchOption = (queryString: string): SearchOption => {
         tags: [], grades: [], genres: []
     };
 
-    const splits = queryString.split("&");
+    const splits = decodeURI(queryString).split("&");
     splits.forEach(split => {
         const [key, value] = split.split("=");
         // Using option[key] can more simplify the code.
