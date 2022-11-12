@@ -31,10 +31,15 @@ function Home() {
 
     // the callback function when the select value is change.
     const onChange = (field: string) => {
-        return (optionValue: string) => {
-            Array.isArray(data[field])
-                ? data[field].push(optionValue)
-                :data[field] = optionValue;
+        return (optionValue: string | string[]) => {
+            if (Array.isArray(data[field])) {
+                // multiple select mode
+                data[field].push(...optionValue as string[]);
+            }
+            else {
+                // single select mode
+                data[field] = optionValue as string;
+            }
         };
     };
 
