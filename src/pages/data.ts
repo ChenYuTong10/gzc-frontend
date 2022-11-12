@@ -175,6 +175,37 @@ export const SelectOptions: SelectGroup[] = [
         label: "查询标签",
         placeholder: "请选择查询标签",
         default: [],
-        options: []
+        options: [
+            {
+                label: "虚构",
+                value: "虚构",
+                disabled: false
+            },
+            {
+                label: "校园",
+                value: "校园",
+                disabled: false
+            },
+            {
+                label: "影评",
+                value: "影评",
+                disabled: false
+            },
+            {
+                label: "社会",
+                value: "社会",
+                disabled: false
+            },
+            {
+                label: "自然人文风光",
+                value: "自然人文风光",
+                disabled: false
+            },
+            {
+                label: "人文自然风光",
+                value: "人文自然风光",
+                disabled: false
+            }
+        ]
     }
 ];
