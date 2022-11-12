@@ -34,6 +34,7 @@
 
     --primary-margin-bottom: 38px;
     --secondary-margin-bottom: 30px;
+    --smallest-margin-bottom: 12px;
 
     --logo-ratio: 350 / 100;
     --logo-url: url("./images/logo.png");
