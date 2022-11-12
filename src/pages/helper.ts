@@ -2,6 +2,7 @@ export interface SearchOption {
     keyword: string;
     target: string;
     limit: number;
+    show: string;
     tags: string[];
     grades: string[];
     genres: string[];
@@ -21,6 +22,7 @@ export const stringifySearchOption = (option: SearchOption): string => {
             case "keyword":
             case "target":
             case "limit":
+            case "show":
                 queryPairs.push(`${key}=${option[key]}`);
                 break;
             case "tags":
@@ -44,7 +46,7 @@ export const stringifySearchOption = (option: SearchOption): string => {
 // parseSearchOption will parse url query string to SearchOption.
 export const parseSearchOption = (queryString: string): SearchOption => {
     const option: SearchOption = {
-        keyword: "", target: "", limit: 0,
+        keyword: "", target: "", limit: 0, show: "",
         tags: [], grades: [], genres: []
     };
 
@@ -62,6 +64,9 @@ export const parseSearchOption = (queryString: string): SearchOption => {
                 break;
             case "limit":
                 option.limit = parseInt(value);
+                break;
+            case "show":
+                option.show = value;
                 break;
             case "tags":
                 option.tags.push(...value.split("+"));
