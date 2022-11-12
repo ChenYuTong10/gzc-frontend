@@ -23,7 +23,9 @@ function Home() {
         data["keyword"] = keyword;
         navigate({
             pathname: "/show",
-            search: createSearchParams(data).toString()
+            search: createSearchParams({
+                params: JSON.stringify(data)
+            }).toString()
         });
     };
 
