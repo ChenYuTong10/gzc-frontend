@@ -3,6 +3,7 @@ import {
     RadioOptions,
     SelectOptions
 } from "./data";
+import {createSearchParams, useNavigate} from "react-router-dom";
 import { Input, Select } from 'antd';
 const { Search } = Input;
 
@@ -12,18 +13,26 @@ function Home() {
 
     const data: {[index: string]: any} = { keyword: "",  target: TargetDefault,  limit: LimitDefault,  tags: [],  grades: [],  genres: [] };
 
+    const navigate = useNavigate();
+
     // the callback function when the search button is clicked or Enter is tapped.
     const onSearch = (keyword: string) => {
         if (keyword.length === 0) {
             return;
         }
         data["keyword"] = keyword;
+        navigate({
+            pathname: "/show",
+            search: createSearchParams(data).toString()
+        });
     };
 
     // the callback function when the select value is change.
     const onChange = (field: string) => {
         return (optionValue: string) => {
-            data[field] = optionValue;
+            Array.isArray(data[field])
+                ? data[field].push(optionValue)
+                :data[field] = optionValue;
         };
     };
 
