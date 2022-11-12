@@ -18,7 +18,7 @@ export const RadioOptions: RadioGroup[] = [
         field: "target",
         // The label here is the hint of the selection.
         // If it is not required, just ignore it.
-        label: "查询目标",
+        label: "查询文本",
         default: "千字文",
         options: [
             {
@@ -57,7 +57,7 @@ export const RadioOptions: RadioGroup[] = [
     },
     {
         field: "show",
-        label: "展示数据",
+        label: "展示内容",
         default: "正文",
         options: [
             {
