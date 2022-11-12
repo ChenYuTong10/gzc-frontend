@@ -4,48 +4,19 @@ import {
     SelectOptions
 } from "./data";
 import { useNavigate } from "react-router-dom";
+import { SearchOption, stringifySearchOption } from "./helper";
 import { Input, Select } from 'antd';
 const { Search } = Input;
 
 function Home() {
-    const TargetDefault = RadioOptions.find(o => o.field === "target")?.default;
-    const LimitDefault = RadioOptions.find(o => o.field === "limit")?.default;
-
-    const params: {[index: string]: any} = { keyword: "",  target: TargetDefault,  limit: LimitDefault,  tags: [],  grades: [],  genres: [] };
+    const params: SearchOption = {
+        keyword: "",
+        target: RadioOptions.find(o => o.field === "target")?.default,
+        limit: RadioOptions.find(o => o.field === "limit")?.default,
+        tags: [], grades: [], genres: []
+    };
 
     const navigate = useNavigate();
-
-    const stringifyParams = (params: any): string => {
-        if (typeof params !== "object") {
-            throw new Error("params need to be an object");
-        }
-        const keyPairs: string[] = [];
-        Object.keys(params).forEach((key) => {
-            switch (typeof params[key]) {
-                case "bigint":
-                case "string":
-                case "number":
-                case "boolean":
-                    keyPairs.push(`${key}=${params[key]}`);
-                    break;
-                case "undefined":
-                    console.warn(`value is undefined in ${key} field`);
-                    break;
-                case "object":
-                case "function":
-                    console.warn(`object and function is unsupported now`);
-                    break;
-                default:
-                    // array type
-                    let values: any[] = [];
-                    params[key].forEach((value: any)=> {
-                        values.push(value);
-                    });
-                    keyPairs.push(`${key}=${values.join("+")}`);
-            }
-        });
-        return keyPairs.join("&");
-    };
 
     // the callback function when the search button is clicked or Enter is tapped.
     const onSearch = (keyword: string) => {
@@ -55,21 +26,21 @@ function Home() {
         params["keyword"] = keyword;
         navigate({
             pathname: "/show",
-            search: `?${stringifyParams(params)}`
+            search: `?${stringifySearchOption(params)}`
         });
     };
 
     // the callback function when the select value is change.
-    const onChange = (field: string) => {
-        return (optionValue: string | string[]) => {
-            if (Array.isArray(params[field])) {
-                // multiple select mode
-                params[field].push(...optionValue as string[]);
-            }
-            else {
-                // single select mode
-                params[field] = optionValue as string;
-            }
+    const radioOnChange = (field: string) => {
+        return (optionValue: string) => {
+            params[field] = optionValue;
+            console.log(params);
+        };
+    };
+    const multipleOnChange = (field: string) => {
+        return (optionValue: string) => {
+            params[field] = optionValue;
+            console.log(params);
         };
     };
 
@@ -102,7 +73,7 @@ function Home() {
                                             size={"large"}
                                             defaultValue={option.default}
                                             options={option.options}
-                                            onChange={onChange(option.field)}
+                                            onChange={radioOnChange(option.field)}
                                         />
                                     </div>
                                 </div>
@@ -123,7 +94,7 @@ function Home() {
                                             defaultValue={option.default}
                                             options={option.options}
                                             placeholder={option.placeholder}
-                                            onChange={onChange(option.field)}
+                                            onChange={multipleOnChange(option.field)}
                                         />
                                     </div>
                                 </div>
