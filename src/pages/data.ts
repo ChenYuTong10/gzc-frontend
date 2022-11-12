@@ -171,7 +171,7 @@ export const SelectOptions: SelectGroup[] = [
         ]
     },
     {
-        field: "genres",
+        field: "tags",
         label: "查询标签",
         placeholder: "请选择查询标签",
         default: [],
