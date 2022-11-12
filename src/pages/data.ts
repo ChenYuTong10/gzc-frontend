@@ -90,7 +90,7 @@ export interface SelectOption {
 
 export const SelectOptions: SelectGroup[] = [
     {
-        field: "grade",
+        field: "grades",
         label: "查询年级",
         placeholder: "请选择查询年级",
         default: [],
@@ -128,7 +128,7 @@ export const SelectOptions: SelectGroup[] = [
         ]
     },
     {
-        field: "genre",
+        field: "genres",
         label: "查询体裁",
         placeholder: "请选择查询体裁",
         default: [],
@@ -171,7 +171,7 @@ export const SelectOptions: SelectGroup[] = [
         ]
     },
     {
-        field: "genre",
+        field: "genres",
         label: "查询标签",
         placeholder: "请选择查询标签",
         default: [],
