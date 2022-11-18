@@ -37,7 +37,9 @@ export const stringifySearchOption = (option: SearchOption): string => {
                 array.forEach((value: any) => {
                     values.push(value);
                 });
-                queryPairs.push(`${key}=${values.join("+")}`);
+                if (values.length > 0) {
+                    queryPairs.push(`${key}=${values.join("+")}`);
+                }
                 break;
             default:
                 console.error(`unknown field ${key}`);
