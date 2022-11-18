@@ -1,3 +1,5 @@
+import { DataType } from "./Show";
+
 export interface SearchOption {
     keyword: string;
     target: string;
@@ -6,6 +8,7 @@ export interface SearchOption {
     tags: string[];
     grades: string[];
     genres: string[];
+
     [key: string]: string | number | string[];
 }
 
@@ -31,7 +34,7 @@ export const stringifySearchOption = (option: SearchOption): string => {
                 // array type
                 let values: any[] = [];
                 const array = option[key] as string[];
-                array.forEach((value: any)=> {
+                array.forEach((value: any) => {
                     values.push(value);
                 });
                 queryPairs.push(`${key}=${values.join("+")}`);
@@ -83,3 +86,13 @@ export const parseSearchOption = (queryString: string): SearchOption => {
     });
     return option;
 };
+
+export const highlightKeyword = (
+    data: DataType[],
+    keyword: string
+) => data.map(datum => {
+    datum.text = datum.text.replaceAll(keyword, `<span class="highlight">${keyword}</span>`);
+    return datum;
+});
+
+// TODO: https://stackoverflow.com/questions/38663751/how-to-safely-render-html-in-react

@@ -6,23 +6,23 @@ import {
     List,
     Drawer,
     Col, Row,
-    Pagination, Select
+    Pagination, Select, message
 } from 'antd';
 import axios from "axios";
-import { parseSearchOption } from "./helper";
+import {highlightKeyword, parseSearchOption} from "./helper";
 import { useSearchParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { RadioOptions, SelectOptions } from "./data";
 
 const { Search } = Input;
 
-interface DataType {
+export interface DataType {
     id: string
     author: string
     text: string
 }
 
-interface SearchResult {
+export interface SearchResult {
     total: number
     docs: DataType[]
 }
@@ -155,8 +155,35 @@ function Show() {
     };
 
     // -------------------- DOCUMENTS LIST --------------------
-
-    const [data, setData] = useState<DataType[]>([]);
+    const a = highlightKeyword([
+        {
+            id: "1",
+            author: "123",
+            text: "明天今天后天明天今天后天明天今天后天明天"
+        },
+        {
+            id: "2",
+            author: "123",
+            text: "明天今天后天明天今天后天明天今天后天明天"
+        },
+        {
+            id: "3",
+            author: "123",
+            text: "明天今天后天明天今天后天明天今天后天明天"
+        },
+        {
+            id: "4",
+            author: "123",
+            text: "明天今天后天明天今天后天明天今天后天明天"
+        },
+        {
+            id: "5",
+            author: "123",
+            text: "明天今天后天明天今天后天明天今天后天明天"
+        }
+    ], "今天");
+    console.log(a);
+    const [data, setData] = useState<DataType[]>(a);
     const [loading, setLoading] = useState(false);
 
     const fetchDocs = async (): Promise<SearchResult> => {
@@ -190,6 +217,7 @@ function Show() {
                 // Anything else
                 console.log("unexpect error", e.message);
             }
+            message.error("服务器繁忙，请稍后再试！");
             return Promise.reject(e);
         }
         finally {
@@ -317,7 +345,10 @@ function Show() {
                                             <div>{index + 1}</div>
                                         </Col>
                                         <Col flex={"auto"}>
-                                            <div className={"show__text"}>{datum.text}</div>
+                                            <div
+                                                className={"show__text"}
+                                                dangerouslySetInnerHTML={{__html: datum.text}}
+                                            ></div>
                                         </Col>
                                         <Col flex={"5%"}>
                                             <Button type="link">详情</Button>
