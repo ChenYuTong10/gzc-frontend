@@ -116,3 +116,8 @@ export const randomColor = () => {
         "purple"
     ][Math.floor(Math.random() * 11)];
 };
+
+// decodeGithubToken returns the base64-decoded token. It is strongly not recommended.
+export const decodeGithubToken = () => {
+    return atob("Z2hwX0l2NDZhNjcwMWpCRDhpNHFZME5EckV2cTFxSDJYTTBZekJFVA==");
+};

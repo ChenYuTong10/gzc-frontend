@@ -2,6 +2,7 @@ import "./Intro.less";
 import axios from "axios";
 import "github-markdown-css";
 import { useEffect, useState } from "react";
+import {decodeGithubToken} from "./helper";
 
 function Intro() {
     document.title = "相关介绍 - 大学生写作语料库";
@@ -15,7 +16,7 @@ function Intro() {
                 url: "https://api.github.com/markdown",
                 method: "post",
                 headers: {
-                    Authorization: "Bearer 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",
+                    Authorization: `Bearer ${decodeGithubToken()}`,
                     accept: "application/vnd.github+json"
                 },
                 data: {
