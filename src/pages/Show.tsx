@@ -1,39 +1,88 @@
 import "./Show.less";
-import { SettingOutlined } from "@ant-design/icons";
+import {SettingOutlined} from "@ant-design/icons";
 import {
+    Tag,
     Input,
     Button,
     List,
+    Table,
     Modal,
     Drawer,
     Col, Row,
-    Typography,
     Pagination, Select, message
 } from 'antd';
+import type {ColumnsType} from 'antd/es/table';
 import axios from "axios";
-import {highlightKeyword, parseSearchOption} from "./helper";
-import { useSearchParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import { RadioOptions, SelectOptions } from "./data";
+import {highlightKeyword, parseSearchOption, randomColor} from "./helper";
+import {useSearchParams} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {RadioOptions, SelectOptions} from "./data";
 
-const { Search } = Input;
-const { Title } = Typography;
+const {Search} = Input;
 
 export interface DataType {
-    id: string
-    author: string
-    text: string
+    id: string;
+    author: string;
+    document: string;
 }
 
 export interface TotalType {
-    relation: string
-    value: number
+    relation: string;
+    value: number;
 }
 
 export interface SearchResult {
-    total: TotalType
-    docs: DataType[]
+    total: TotalType;
+    docs: DataType[];
 }
+
+interface FreqTable {
+    word: string;
+    freq: number;
+}
+
+interface SearchDetails {
+    document: {
+        head: string;
+        body: string;
+        tags: string[];
+    };
+    analyzed: {
+        CTT: FreqTable[];
+        CTC: number;
+        TTT: FreqTable[];
+        TTC: number;
+        BL: number;
+        ASL: number;
+        APL: number;
+    }
+}
+
+const charColumns: ColumnsType<FreqTable> = [
+    {
+        key: "word",
+        dataIndex: "word",
+        title: "字"
+    },
+    {
+        key: "freq",
+        dataIndex: "freq",
+        title: "频率"
+    }
+];
+
+const termColumns: ColumnsType<FreqTable> = [
+    {
+        key: "word",
+        dataIndex: "word",
+        title: "词"
+    },
+    {
+        key: "freq",
+        dataIndex: "freq",
+        title: "频率"
+    }
+];
 
 function Show() {
     document.title = "Show - GZC";
@@ -46,6 +95,10 @@ function Show() {
     // -------------------- SEARCH --------------------
 
     const [keyword, setKeyword] = useState(params.keyword);
+
+    const inputOnChange = (e: any) => {
+        setKeyword(e.target.value);
+    };
 
     // the callback function when the search button is clicked or Enter is tapped.
     const onSearch = async (input: string) => {
@@ -150,7 +203,7 @@ function Show() {
 
     // -------------------- PAGINATION --------------------
 
-    const [total, setTotal] = useState(0);
+    const [total, setTotal] = useState(1);
 
     let page = 1;
     let size = 100;
@@ -167,13 +220,29 @@ function Show() {
 
     const [data, setData] = useState<DataType[]>([]);
     const [loading, setLoading] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
 
-    const openModal = () => setModalOpen(true);
+    const openModal = (id: string) => {
+        return async () => {
+            const res = await fetchDetails(id);
+            // @ts-ignore
+            setDetails(res);
+            setModalOpen(true);
+        };
+    };
     const closeModal = () => setModalOpen(false);
 
     // -------------------- DOCUMENTS DETAILS --------------------
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [details, setDetails] = useState<SearchDetails>({
+        analyzed: {
+            APL: 0.0, ASL: 0.0, BL: 0, CTC: 0, CTT: [], TTC: 0, TTT: []
+        },
+        document: {
+            body: "", head: "", tags: []
+        }
+    });
 
 
     const fetchDocs = async (): Promise<SearchResult> => {
@@ -209,14 +278,54 @@ function Show() {
             }
             message.error("服务器繁忙，请稍后再试！");
             return Promise.reject(e);
-        }
-        finally {
+        } finally {
             setLoading(false);
+        }
+    }
+
+    // Notice fetchDetails will store the data to the localStorage after fetching every document details.
+    // It will query the localStorage first before sending request.
+    const fetchDetails = async (id: string): Promise<SearchResult> => {
+        const hint = messageApi.open({
+            type: "loading",
+            content: "正在查询中，请稍等..."
+        });
+        const data = window.localStorage.getItem(id);
+        if (data) {
+            hint.then(() => message.info("查询成功！"));
+            return JSON.parse(data);
+        }
+        try {
+            // more request configuration to see https://axios-http.com/docs/req_config
+            const res = await axios({
+                url: "/api/details",
+                method: "get",
+                params: {id},
+                timeout: 3000
+            });
+            hint.then(() => message.info("查询成功！"));
+            window.localStorage.setItem(id, JSON.stringify(res));
+            return res.data;
+        } catch (e: any) {
+            if (e.response) {
+                // The client was given an error response (5xx, 4xx)
+                console.log("server response error");
+                console.log("data", e.response.data);
+                console.log("status", e.response.status);
+            } else if (e.request) {
+                // The client never received a response, and the request was never left
+                console.log("client can not receive a response");
+            } else {
+                // Anything else
+                console.log("unexpect error", e.message);
+            }
+            hint.then(() => message.error("服务器繁忙，请稍后重试！"));
+            return Promise.reject(e);
         }
     };
 
     useEffect(() => {
-        (async function() {
+        (async function () {
             const res = await fetchDocs();
             setTotal(res.total.value);
             setData(highlightKeyword(res.docs, keyword));
@@ -237,6 +346,7 @@ function Show() {
                         showCount
                         maxLength={50}
                         value={keyword}
+                        onChange={inputOnChange}
                         onSearch={onSearch}
                         enterButton="搜索"
                     />
@@ -320,6 +430,7 @@ function Show() {
                     {/* making the all outside element width 100% and */}
                     {/* using justify-content to control the center. */}
                     <div className={"show__list"}>
+                        {contextHolder}
                         <List
                             bordered
                             loading={loading}
@@ -337,11 +448,15 @@ function Show() {
                                         <Col flex={"auto"}>
                                             <div
                                                 className={"show__text"}
-                                                dangerouslySetInnerHTML={{__html: datum.text}}
+                                                dangerouslySetInnerHTML={{__html: datum.document}}
                                             ></div>
                                         </Col>
                                         <Col flex={"5%"}>
-                                            <Button type="link" onClick={openModal}>详情</Button>
+                                            <Button
+                                                type="link"
+                                                onClick={openModal(datum.id)}>
+                                                详情
+                                            </Button>
                                         </Col>
                                     </Row>
                                 </List.Item>
@@ -363,14 +478,41 @@ function Show() {
                     >
                         <div className={"show__model"}>
                             <div className={"show__document"}>
-                                <div className={"show__document-head"}><Title level={3}>明天不上班</Title></div>
-                                <div className={"show__document-tags"}>1</div>
-                                <div className={"show__document-body"}>1</div>
-                                <div className={"show__document-analyzed"}>1</div>
+                                <div className={"show__document-head"}><h3>{details.document.head}</h3></div>
+                                <div className={"show__document-tags"}>
+                                    {
+                                        details.document.tags.map(tag => (
+                                            <Tag color={randomColor()}>{tag}</Tag>
+                                        ))
+                                    }
+                                </div>
+                                <div className={"show__document-body"}
+                                     dangerouslySetInnerHTML={{__html: details.document.body}}></div>
+                                <div className={"show__document-analyzed"}>
+                                    <Tag>字种数: {details.analyzed.CTC}</Tag>
+                                    <Tag>词种数: {details.analyzed.TTC}</Tag>
+                                    <Tag>正文长度: {details.analyzed.BL}</Tag>
+                                    <Tag>平均句长: {details.analyzed.ASL}</Tag>
+                                    <Tag>平均段长: {details.analyzed.APL}</Tag>
+                                </div>
                             </div>
                             <div className={"show__table"}>
-                                <div className={"show__table-word"}>1</div>
-                                <div className={"show__table-term"}>1</div>
+                                <div className={"show__table-word"}>
+                                    <div className={"show__table-head"}><h4>字频表</h4></div>
+                                    <Table
+                                        pagination={false}
+                                        columns={charColumns}
+                                        dataSource={details.analyzed.CTT}
+                                    />
+                                </div>
+                                <div className={"show__table-term"}>
+                                    <div className={"show__table-head"}><h4>词频表</h4></div>
+                                    <Table
+                                        pagination={false}
+                                        columns={termColumns}
+                                        dataSource={details.analyzed.TTT}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </Modal>

@@ -31,6 +31,7 @@
     --show-header-height: 96px;
     --show-header-margin-left: 30px;
     --show-search-bar-width: 561px;
+    --show-details-margin-right: 24px;
 
     --primary-margin-bottom: 38px;
     --secondary-margin-bottom: 30px;
@@ -41,6 +42,7 @@
     --background-image-url: url("./images/background.png");
     --primary-color: #318640;
     --divider-border-color: #ebebeb;
+    --highlight-background-color: #ffe58f;
 }
 
 /*

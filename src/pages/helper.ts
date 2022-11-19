@@ -93,8 +93,26 @@ export const highlightKeyword = (
     data: DataType[],
     keyword: string
 ) => data.map(datum => {
-    datum.text = datum.text.replaceAll(keyword, `<span class="highlight">${keyword}</span>`);
+    datum.document = datum.document.replaceAll(keyword, `<span class="highlight">${keyword}</span>`);
     return datum;
 });
 
 // TODO: https://stackoverflow.com/questions/38663751/how-to-safely-render-html-in-react
+
+// randomColor returns the color displayed in ant-design official demo.
+// Link: https://ant.design/components/tag
+export const randomColor = () => {
+    return [
+        "magenta",
+        "red",
+        "volcano",
+        "orange",
+        "gold",
+        "lime",
+        "green",
+        "cyan",
+        "blue",
+        "geekblue",
+        "purple"
+    ][Math.floor(Math.random() * 11)];
+};
