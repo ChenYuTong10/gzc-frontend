@@ -4,8 +4,10 @@ import {
     Input,
     Button,
     List,
+    Modal,
     Drawer,
     Col, Row,
+    Typography,
     Pagination, Select, message
 } from 'antd';
 import axios from "axios";
@@ -15,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import { RadioOptions, SelectOptions } from "./data";
 
 const { Search } = Input;
+const { Title } = Typography;
 
 export interface DataType {
     id: string
@@ -22,8 +25,13 @@ export interface DataType {
     text: string
 }
 
+export interface TotalType {
+    relation: string
+    value: number
+}
+
 export interface SearchResult {
-    total: number
+    total: TotalType
     docs: DataType[]
 }
 
@@ -44,8 +52,8 @@ function Show() {
         if (input.length !== 0) {
             setKeyword(input);
             const res = await fetchDocs();
-            setTotal(res.total);
-            setData(res.docs);
+            setData(highlightKeyword(res.docs, keyword));
+            setTotal(res.total.value);
         }
     };
 
@@ -124,6 +132,7 @@ function Show() {
     // the callback function when the select value is change.
     const radioOnChange = (field: string) => {
         return (optionValue: string) => {
+            console.log(optionValue);
             const setter = getRadioStateSetter(field);
             if (setter) {
                 setter(optionValue);
@@ -150,45 +159,26 @@ function Show() {
         page = pageNum;
         size = pageSize;
         const res = await fetchDocs();
-        setTotal(res.total);
-        setData(res.docs);
+        setData(highlightKeyword(res.docs, keyword));
+        setTotal(res.total.value);
     };
 
     // -------------------- DOCUMENTS LIST --------------------
-    const a = highlightKeyword([
-        {
-            id: "1",
-            author: "123",
-            text: "明天今天后天明天今天后天明天今天后天明天"
-        },
-        {
-            id: "2",
-            author: "123",
-            text: "明天今天后天明天今天后天明天今天后天明天"
-        },
-        {
-            id: "3",
-            author: "123",
-            text: "明天今天后天明天今天后天明天今天后天明天"
-        },
-        {
-            id: "4",
-            author: "123",
-            text: "明天今天后天明天今天后天明天今天后天明天"
-        },
-        {
-            id: "5",
-            author: "123",
-            text: "明天今天后天明天今天后天明天今天后天明天"
-        }
-    ], "今天");
-    console.log(a);
-    const [data, setData] = useState<DataType[]>(a);
+
+    const [data, setData] = useState<DataType[]>([]);
     const [loading, setLoading] = useState(false);
+
+    const openModal = () => setModalOpen(true);
+    const closeModal = () => setModalOpen(false);
+
+    // -------------------- DOCUMENTS DETAILS --------------------
+
+    const [modalOpen, setModalOpen] = useState(false);
+
 
     const fetchDocs = async (): Promise<SearchResult> => {
         const newParams = {
-            keyword, target, limit, show, grades, genres, tags
+            keyword, target, limit, show, grades, genres, tags, page, size
         };
 
         setLoading(true);
@@ -228,8 +218,8 @@ function Show() {
     useEffect(() => {
         (async function() {
             const res = await fetchDocs();
-            setTotal(res.total);
-            setData(res.docs);
+            setTotal(res.total.value);
+            setData(highlightKeyword(res.docs, keyword));
         }())
     }, []);
 
@@ -351,13 +341,39 @@ function Show() {
                                             ></div>
                                         </Col>
                                         <Col flex={"5%"}>
-                                            <Button type="link">详情</Button>
+                                            <Button type="link" onClick={openModal}>详情</Button>
                                         </Col>
                                     </Row>
                                 </List.Item>
                             )}
                         />
                     </div>
+                </div>
+                <div className={"show_details"}>
+                    <Modal
+                        centered
+                        width={"100%"}
+                        bodyStyle={{
+                            height: "90vh"
+                        }}
+                        title="语料详情"
+                        footer={null}
+                        open={modalOpen}
+                        onCancel={closeModal}
+                    >
+                        <div className={"show__model"}>
+                            <div className={"show__document"}>
+                                <div className={"show__document-head"}><Title level={3}>明天不上班</Title></div>
+                                <div className={"show__document-tags"}>1</div>
+                                <div className={"show__document-body"}>1</div>
+                                <div className={"show__document-analyzed"}>1</div>
+                            </div>
+                            <div className={"show__table"}>
+                                <div className={"show__table-word"}>1</div>
+                                <div className={"show__table-term"}>1</div>
+                            </div>
+                        </div>
+                    </Modal>
                 </div>
             </main>
         </div>
