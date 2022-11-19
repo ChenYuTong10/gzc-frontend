@@ -45,6 +45,13 @@ function Home() {
         };
     };
 
+    const onClickIntro = () => {
+        navigate({
+            pathname: "/intro",
+        });
+    };
+    const onClickGithub = () => { window.location.href = "https://github.com/ChenYuTong10/gzc-frontend"; };
+
     return (
         <div className={"home__container"}>
             <main>
@@ -109,13 +116,14 @@ function Home() {
             </main>
             <footer>
                 <ul>
-                    <li><span>相关介绍</span></li>
+                    <li><span onClick={onClickIntro}>相关介绍</span></li>
                     <li><span>关于我们</span></li>
                     <li>
                         <span
                             style={{
                                 fontFamily: "Poppins, sans-serif"
                             }}
+                            onClick={onClickGithub}
                         >
                             Github
                         </span>
