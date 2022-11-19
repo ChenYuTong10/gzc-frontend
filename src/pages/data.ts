@@ -19,7 +19,7 @@ export const RadioOptions: RadioGroup[] = [
         // The label here is the hint of the selection.
         // If it is not required, just ignore it.
         label: "查询文本",
-        default: "千字文",
+        default: "qianziwen",
         options: [
             {
                 label: "千字文",
