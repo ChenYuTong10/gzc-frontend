@@ -85,7 +85,7 @@ const termColumns: ColumnsType<FreqTable> = [
 ];
 
 function Show() {
-    document.title = "Show - GZC";
+    document.title = "查询 - 大学生写作语料库";
 
     const [searchParams] = useSearchParams();
     // Here params is temporary to store the parameters from the home page.

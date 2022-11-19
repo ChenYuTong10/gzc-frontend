@@ -9,6 +9,8 @@ import { Input, Select } from 'antd';
 const { Search } = Input;
 
 function Home() {
+    document.title = "首页 - 大学生写作语料库";
+
     const params: SearchOption = {
         keyword: "",
         target: RadioOptions.find(o => o.field === "target")?.default,
