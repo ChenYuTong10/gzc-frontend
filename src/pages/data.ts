@@ -58,7 +58,7 @@ export const RadioOptions: RadioGroup[] = [
     {
         field: "show",
         label: "展示内容",
-        default: "正文",
+        default: "body",
         options: [
             {
                 label: "标题",
