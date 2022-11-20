@@ -290,10 +290,10 @@ function Show() {
             type: "loading",
             content: "正在查询中，请稍等..."
         });
-        const data = window.localStorage.getItem(id);
-        if (data) {
+        const storage = window.localStorage.getItem(id);
+        if (storage) {
             hint.then(() => message.info("查询成功！"));
-            return JSON.parse(data);
+            return JSON.parse(storage);
         }
         try {
             // more request configuration to see https://axios-http.com/docs/req_config
@@ -304,7 +304,7 @@ function Show() {
                 timeout: 3000
             });
             hint.then(() => message.info("查询成功！"));
-            window.localStorage.setItem(id, JSON.stringify(res));
+            window.localStorage.setItem(id, JSON.stringify(res.data));
             return res.data;
         } catch (e: any) {
             if (e.response) {
