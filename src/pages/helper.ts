@@ -97,6 +97,11 @@ export const highlightKeyword = (
     return datum;
 });
 
+export const highlightString = (
+    str: string,
+    keyword: string
+) => str.replaceAll(keyword, `<span class="highlight">${keyword}</span>`);
+
 // TODO: https://stackoverflow.com/questions/38663751/how-to-safely-render-html-in-react
 
 // randomColor returns the color displayed in ant-design official demo.

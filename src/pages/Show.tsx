@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import axios from "axios";
-import {highlightKeyword, parseSearchOption, randomColor} from "./helper";
+import {highlightKeyword, highlightString, parseSearchOption, randomColor} from "./helper";
 import {useSearchParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {RadioOptions, SelectOptions} from "./data";
@@ -225,6 +225,7 @@ function Show() {
     const openModal = (id: string) => {
         return async () => {
             const res = await fetchDetails(id);
+            res.document.body = highlightString(res.document.body, keyword);
             // @ts-ignore
             setDetails(res);
             setModalOpen(true);
@@ -285,7 +286,7 @@ function Show() {
 
     // Notice fetchDetails will store the data to the localStorage after fetching every document details.
     // It will query the localStorage first before sending request.
-    const fetchDetails = async (id: string): Promise<SearchResult> => {
+    const fetchDetails = async (id: string): Promise<SearchDetails> => {
         const hint = messageApi.open({
             type: "loading",
             content: "正在查询中，请稍等..."
