@@ -3,7 +3,7 @@
 `GZC` is a tiny corpus search engine built on Guangzhou University.
 It integrates the basic advanced search, text analysis and visible platform.
 
-This repository is only the frontend part. The backend part is [here]().
+This repository is only the frontend part. The backend part is [here](https://github.com/ChenYuTong10/gzc-backend).
 
 ## 🔮 Snapshot
 
