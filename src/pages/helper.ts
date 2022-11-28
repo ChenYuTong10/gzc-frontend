@@ -126,3 +126,29 @@ export const randomColor = () => {
 export const decodeGithubToken = () => {
     return atob("Z2hwX0l2NDZhNjcwMWpCRDhpNHFZME5EckV2cTFxSDJYTTBZekJFVA==");
 };
+
+// SaveFile saves any forms of data to a file with the filename.
+export const SaveFile = (data: any, filename: string) => {
+    const blob = new Blob([data]);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.setAttribute("href", url);
+    a.setAttribute("download", filename);
+    a.click();
+};
+
+// axiosErrHandler just simply handles the request error and outputs the message to the console.
+export const axiosErrHandler = (e: any) => {
+    if (e.response) {
+        // The client was given an error response (5xx, 4xx)
+        console.log("server response error");
+        console.log("data", e.response.data);
+        console.log("status", e.response.status);
+    } else if (e.request) {
+        // The client never received a response, and the request was never left
+        console.log("client can not receive a response");
+    } else {
+        // Anything else
+        console.log("unexpect error", e.message);
+    }
+};

@@ -1,5 +1,8 @@
 import "./Show.less";
-import {SettingOutlined} from "@ant-design/icons";
+import {
+    SettingOutlined,
+    CloudDownloadOutlined
+} from "@ant-design/icons";
 import {
     Tag,
     Input,
@@ -9,11 +12,19 @@ import {
     Modal,
     Drawer,
     Col, Row,
+    notification,
     Pagination, Select, message
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import axios from "axios";
-import {highlightKeyword, highlightString, parseSearchOption, randomColor} from "./helper";
+import {
+    highlightKeyword,
+    highlightString,
+    parseSearchOption,
+    randomColor,
+    SaveFile,
+    axiosErrHandler
+} from "./helper";
 import {useSearchParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {RadioOptions, SelectOptions} from "./data";
@@ -201,6 +212,49 @@ function Show() {
         };
     };
 
+    // -------------------- DOWNLOAD --------------------
+
+    const downloadOnClick = () => {
+        notification.info({
+            placement: "topLeft",
+            message: "下载语料",
+            description: "允许下载全部语料，请勿用于商业用途。稍等片刻，下载将不久后开始。",
+            duration: 2.5,
+            onClose: async () => {
+                const res = await fetchDownloadFile();
+                SaveFile(res, `${keyword}.txt`);
+            }
+        });
+    };
+
+    const fetchDownloadFile = async (): Promise<string> => {
+        const newParams = {
+            keyword, target, limit, show, grades, genres, tags
+        };
+
+        try {
+            const res = await axios({
+                url: "/api/download",
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                data: JSON.stringify(newParams)
+            });
+            return res.data;
+        }
+        catch (e: any) {
+            axiosErrHandler(e);
+            notification.error({
+                placement: "topLeft",
+                message: "下载语料",
+                description: "服务器繁忙，请稍后重试。",
+                duration: 3
+            });
+            return Promise.reject(e);
+        }
+    };
+
     // -------------------- PAGINATION --------------------
 
     const [total, setTotal] = useState(1);
@@ -265,18 +319,7 @@ function Show() {
             });
             return res.data;
         } catch (e: any) {
-            if (e.response) {
-                // The client was given an error response (5xx, 4xx)
-                console.log("server response error");
-                console.log("data", e.response.data);
-                console.log("status", e.response.status);
-            } else if (e.request) {
-                // The client never received a response, and the request was never left
-                console.log("client can not receive a response");
-            } else {
-                // Anything else
-                console.log("unexpect error", e.message);
-            }
+            axiosErrHandler(e);
             message.error("服务器繁忙，请稍后再试！");
             return Promise.reject(e);
         } finally {
@@ -308,18 +351,7 @@ function Show() {
             window.localStorage.setItem(id, JSON.stringify(res.data));
             return res.data;
         } catch (e: any) {
-            if (e.response) {
-                // The client was given an error response (5xx, 4xx)
-                console.log("server response error");
-                console.log("data", e.response.data);
-                console.log("status", e.response.status);
-            } else if (e.request) {
-                // The client never received a response, and the request was never left
-                console.log("client can not receive a response");
-            } else {
-                // Anything else
-                console.log("unexpect error", e.message);
-            }
+            axiosErrHandler(e);
             hint.then(() => message.error("服务器繁忙，请稍后重试！"));
             return Promise.reject(e);
         }
@@ -409,6 +441,13 @@ function Show() {
                             }
                         </div>
                     </Drawer>
+                </div>
+                <div className={"show__download"}>
+                    <Button
+                        size={"large"}
+                        shape={"circle"}
+                        onClick={downloadOnClick}
+                    ><CloudDownloadOutlined/></Button>
                 </div>
             </header>
             <main>
