@@ -11,6 +11,7 @@ import {
     Table,
     Modal,
     Drawer,
+    Tooltip,
     Col, Row,
     notification,
     Pagination, Select, message
@@ -385,11 +386,13 @@ function Show() {
                     />
                 </div>
                 <div className={"show__advance"}>
-                    <Button
-                        size={"large"}
-                        shape={"circle"}
-                        onClick={openDrawer}
-                    ><SettingOutlined/></Button>
+                    <Tooltip title={"高级检索"}>
+                        <Button
+                            size={"large"}
+                            shape={"circle"}
+                            onClick={openDrawer}
+                        ><SettingOutlined/></Button>
+                    </Tooltip>
                     <Drawer
                         className={"show_drawer"}
                         title="高级检索"
@@ -443,11 +446,13 @@ function Show() {
                     </Drawer>
                 </div>
                 <div className={"show__download"}>
-                    <Button
-                        size={"large"}
-                        shape={"circle"}
-                        onClick={downloadOnClick}
-                    ><CloudDownloadOutlined/></Button>
+                    <Tooltip title={"下载语料"}>
+                        <Button
+                            size={"large"}
+                            shape={"circle"}
+                            onClick={downloadOnClick}
+                        ><CloudDownloadOutlined/></Button>
+                    </Tooltip>
                 </div>
             </header>
             <main>
