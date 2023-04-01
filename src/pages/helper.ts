@@ -124,7 +124,7 @@ export const randomColor = () => {
 
 // decodeGithubToken returns the base64-decoded token. It is strongly not recommended.
 export const decodeGithubToken = () => {
-    return atob("Z2hwX0l2NDZhNjcwMWpCRDhpNHFZME5EckV2cTFxSDJYTTBZekJFVA==");
+    return atob("Z2hwX054UDZwNFNRWG9BalhIbkRLTlVNTUh5Q1N3a2MydzNpYTloWQ==");
 };
 
 // SaveFile saves any forms of data to a file with the filename.
